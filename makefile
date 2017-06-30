@@ -1,7 +1,7 @@
 
 CC = clang
 LD = Ld 
-CFLAGS = -g -c -Wall  
+CFLAGS = -g -Wall  
 LDFLAG = -g  
 TARGET = torrent
 OBJS = test.o torrent.o
