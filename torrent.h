@@ -67,9 +67,11 @@ __BEGIN_TYPE_DEFINE(torrent_file_t)
 	__MEMBER_DEFINE(createion_date,uint64_t)
 	__MEMBER_DEFINE(comment,str_t)
 	__MEMBER_DEFINE(creator,str_t)
+	__MEMBER_DEFINE(encoding,str_t)
 	__MEMBER_DEFINE(info,torrent_info_t)
 __END_TYPE_DEFINE(torrent_file_t)
 
 
-void decode(char* path);
+void free_torrent_file(torrent_file_t info);
+torrent_file_t decode(char* path);
 #endif
