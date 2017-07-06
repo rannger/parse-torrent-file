@@ -460,11 +460,12 @@ torrent_info_t rdinfo(const char* buf,const uint32_t len,int *next)
 			const char* buffer = buf+index;
 			int next = 0;
 			do {
-				if (buffer[next]==':')
+				if (buffer[next]==':') {
+					next++;
 					break;
+				}
 				next++;
 			}while(1);
-			next++;
 			uint64_t len = 0;
 			sscanf(buffer,"%lld",&len);
 			next += len;
