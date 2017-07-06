@@ -470,7 +470,6 @@ torrent_info_t rdinfo(const char* buf,const uint32_t len,int *next)
 			sscanf(buffer,"%lld",&len);
 			next += len;
 			uint8_t* pieces = (uint8_t*)malloc(sizeof(uint8_t)*len);
-			bzero(pieces,len);
 			strncpy(pieces,buffer+next,len);
 			ret->pieces = pieces;
 			index += next;
