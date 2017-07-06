@@ -468,7 +468,12 @@ torrent_info_t rdinfo(const char* buf,const uint32_t len,int *next)
 			uint64_t len = 0;
 			sscanf(buffer,"%lld",&len);
 			next += len;
+			uint8_t* pieces = (uint8_t*)malloc(sizeof(uint8_t)*len);
+			bzero(pieces,len);
+			strncpy(pieces,buffer+next,len);
+			ret->pieces = pieces;
 			index += next;
+			__ASSERT(index==len);
 		} else if (strcmp(key,"name")==0) {
 			int next = 0;
 			str_t name = rdstr(buf+index,len-index,&next);
@@ -483,7 +488,6 @@ torrent_info_t rdinfo(const char* buf,const uint32_t len,int *next)
 			sinfo->length = length;
 			ret->single_file_info = sinfo;
 		} else if (strcmp(key,"files")==0) {
-			/* code */
 			int next = 0;
 			torrent_mulit_file_info_t minfo = rdmfi(buf+index,len-index,&next);
 			index += next;
@@ -526,6 +530,10 @@ torrent_mulit_file_info_t rdmfi(const char* buf,const uint32_t len,int* next)
 		node->next = NULL;
 		list_append(list,node);
 	}
+
+	ret->files = list;
+
+	*next = index;
 	return ret;
 }
 
@@ -543,7 +551,6 @@ fi_t rdfi(const char* buf,const uint32_t len,int* next)
 	while(index<len && 'e'!=buf[index]) {
 		int next = 0;
 		str_t key = rdstr(buf+index,len-index,&next);
-		__ASSERT(strlen(key)==next);
 		index+=next;
 		if (strcmp(key,"length") == 0) {
 			int next = 0;
@@ -557,7 +564,7 @@ fi_t rdfi(const char* buf,const uint32_t len,int* next)
 			ret->path = path;
 		}
 	}
-
+	*next = index;
 	return ret;
 }
 
